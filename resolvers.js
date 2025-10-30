@@ -1,4 +1,4 @@
-const { UserInputError, ApolloError } = require('apollo-server');
+const { UserInputError, ApolloError } = require('apollo-server-express');
 
 // Dữ liệu giả
 const books = [

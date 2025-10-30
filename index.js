@@ -1,9 +1,23 @@
-const { ApolloServer } = require('apollo-server');
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
 
-const server = new ApolloServer({ typeDefs, resolvers });
+async function startServer() {
+  const app = express();
+  const apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server sẵn sàng tại ${url}`);
-});
+  await apolloServer.start();
+
+  apolloServer.applyMiddleware({ app });
+
+  const port = process.env.PORT || 4000;
+  app.listen(port, () => {
+    console.log(`🚀 Server ready at http://localhost:${port}${apolloServer.graphqlPath}`);
+  });
+}
+
+startServer();
