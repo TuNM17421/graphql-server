@@ -1,22 +1,9 @@
-const express = require('express');
-const path = require('path')
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./typeDefs');
+const resolvers = require('./resolvers');
 
-const app = express();
+const server = new ApolloServer({ typeDefs, resolvers });
 
-const port = parseInt(process.env.PORT) || process.argv[3] || 8080;
-
-app.use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs');
-
-app.get('/', (req, res) => {
-  res.render('index');
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server sẵn sàng tại ${url}`);
 });
-
-app.get('/api', (req, res) => {
-  res.json({"msg": "Hello world"});
-});
-
-app.listen(port, () => {
-  console.log(`Listening on http://localhost:${port}`);
-})
